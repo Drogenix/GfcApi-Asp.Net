@@ -12,7 +12,7 @@ namespace GfcWebApi.Models
 
         public string Card { get; set; }
 
-        public int IsTitleFight { get; set; }
+        public bool IsTitleFight { get; set; }
 
         public int FirstFighterId { get; set; }
 
@@ -22,11 +22,11 @@ namespace GfcWebApi.Models
 
         public virtual Fighter SecondFighter { get; set; }
 
-        public int IsComplete { get; set; }
-
         public int WinnerNum { get; set; }
 
         public string WinReason { get; set; }
+
+        public int Round { get; set; }
 
         public int FirstEndRating { get; set; }
 

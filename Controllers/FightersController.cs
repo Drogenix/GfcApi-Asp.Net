@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gfc.Data;
 using GfcWebApi.Models;
+using Microsoft.AspNetCore.Html;
+using System.Reflection.Metadata;
+using System.Text.Encodings.Web;
 
 namespace Gfc.Controllers
 {
@@ -14,9 +17,9 @@ namespace Gfc.Controllers
     [ApiController]
     public class FightersController : ControllerBase
     {
-        private readonly FighterContext _fighterContext;
+        private readonly GfcContext _fighterContext;
 
-        public FightersController(FighterContext context)
+        public FightersController(GfcContext context)
         {
             _fighterContext = context;
         }
@@ -24,20 +27,52 @@ namespace Gfc.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fighter>>> GetFighters()
         {
-          if (_fighterContext.Fighter == null)
+          if (_fighterContext.Fighters == null)
           {
               return NotFound();
           }
-            return await _fighterContext.Fighter.ToListAsync();
+            return await _fighterContext.Fighters.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<Fighter> GetFighter(int id)
         {
-            var fighter = await _fighterContext.Fighter.FirstOrDefaultAsync(fighter => fighter.Id == id);
+            var fighter = await _fighterContext.Fighters.FirstOrDefaultAsync(fighter => fighter.Id == id);
+
+            //HtmlContentBuilder contentBuilder = new();
+
+            //HtmlString htmlString = new HtmlString("<p>Привет всем</p>");
+
+            //contentBuilder = (HtmlContentBuilder)contentBuilder.AppendHtmlLine("<p>Привет всем</p>");
+
+            //var fileName = @"C:\blogname.html";
+
+            //StreamWriter sw = new StreamWriter(fileName, true);
+
+            //contentBuilder.WriteTo(sw, HtmlEncoder.Default);
+
+            //sw.Close();
+
+            //Console.WriteLine(AppContext.BaseDirectory);
 
             return fighter;
         }
+        [HttpGet("ratings")]
+        public async Task<IEnumerable<Fighter>> GetFightersRatings()
+        {
+            var fighters = await _fighterContext.Fighters.Where(item => item.Rating != 0).OrderBy(item => item.Weight).ThenBy(item=> item.Rating).ToListAsync();
+
+            return fighters;
+        }
+        [HttpGet("pfpratings")]
+        public async Task<IEnumerable<Fighter>> GetFightersPfpRatings()
+        {
+            var fighters = await _fighterContext.Fighters.Where(item => item.PfpRating != 0).OrderBy(item => item.PfpRating).ToListAsync();
+
+            return fighters;
+        }
+
+
 
     }
 }

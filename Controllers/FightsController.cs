@@ -14,35 +14,33 @@ namespace Gfc.Controllers
     [ApiController]
     public class FightsController : ControllerBase
     {
-        private readonly FightContext _fightContext;
+        private readonly GfcContext _fightContext;
 
-        public FightsController(FightContext context)
+        public FightsController(GfcContext context)
         {
             _fightContext = context;
         }
 
-        [HttpGet("fights")]
-        public async Task<ActionResult<IEnumerable<Fight>>> GetFights()
+        [HttpGet("fights/{id}")]
+        public async Task<ActionResult<IEnumerable<Fight>>> GetFights(int id)
         {
-          if (_fightContext.Fight == null)
+          if (_fightContext.Fights == null)
           {
               return NotFound();
           }
 
-            var fights = _fightContext.Fight.ToList();
+            var fights = await _fightContext.Fights
+                .Where(fight => fight.Date < DateTime.Now && fight.FirstFighterId == id | fight.SecondFighterId == id)
+                .OrderBy(fight => fight.Date)
+                .ToListAsync();
+
+            if(fights == null)
+            {
+                return NoContent();
+            }
 
             return fights;
         }
-
-        [HttpGet("lastfight/{fighterId:int}")]
-        public async Task<ActionResult<Fight>> GetFight(int fighterId)
-        {
-            var fight = _fightContext.Fight.Where(f => f.FirstFighterId == fighterId | f.SecondFighterId == fighterId).First();
-
-            return fight;
-        }
-
-
 
     }
 }

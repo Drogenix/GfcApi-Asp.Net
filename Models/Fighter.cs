@@ -9,9 +9,11 @@ namespace GfcWebApi.Models
         public string Sex { get; set; }
         public string Country { get; set; }
         public string Name { get; set; }
+        public string SecondName { get; set; }
         public string Nickname { get; set; }
         public string Weight { get; set; }
-        public int Position { get; set; }
+        public int PfpRating { get; set; }
+        public int Rating { get; set; }
         public int Win { get; set; }
         public int Lose { get; set; }
         public int Draw { get; set; }
@@ -26,5 +28,6 @@ namespace GfcWebApi.Models
         public int WInByDecision { get; set; }
         public int WinBySubmission { get; set; }
         public string PictureUrl { get; set; }
+        public string ProfilePictureUrl { get; set; }
     }
 }

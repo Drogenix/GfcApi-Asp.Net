@@ -6,14 +6,18 @@ namespace GfcWebApi.Models
     {
         public int Id { get; set; }
 
+        public int Number { get; set; }
+
+        public string Title { get; set; }
+
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
 
         public string Place { get; set; }
 
         public virtual List<Fight> Fights { get; set; }
 
-        public int IsComplete { get; set; }
+        public bool IsComplete { get; set; }
 
         public string PictureUrl { get; set; }
 
